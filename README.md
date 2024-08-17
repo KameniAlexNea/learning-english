@@ -1,4 +1,3 @@
-
 # English Learning Tool
 
 This project is a web-based English learning tool that allows users to improve their writing skills by engaging in discussions on suggested topics. The tool provides feedback on user input in terms of clarity, grammar, and adherence to the topic. Additionally, it can suggest answers to topics, helping users to learn through examples.
@@ -33,7 +32,7 @@ This project is a web-based English learning tool that allows users to improve t
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/english-learning-tool.git
+git clone https://github.com/KameniAlexNea/english-learning-tool.git
 cd english-learning-tool
 ```
 
