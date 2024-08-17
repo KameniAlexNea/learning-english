@@ -1,16 +1,16 @@
-from http.client import HTTPException
 import os
-from pydantic import BaseModel
+
 import openai
 from dotenv import load_dotenv
+from pydantic import BaseModel
+
 load_dotenv()
 
-client = openai.OpenAI(api_key=os.environ["OPENAI_API_KEY"],)
+client = openai.OpenAI(
+    api_key=os.environ["OPENAI_API_KEY"],
+)
 model_name = "gpt-4o-mini"
 
-class UserInput(BaseModel):
-    user_input: str
-    topic: str
 
 SYSTEM_PROMPT = """
 You are an AI assistant tasked with suggesting a writing topic and providing a brief commentary to help someone improve their writing skills. 
@@ -26,6 +26,16 @@ Next, create a brief commentary about the suggested topic. This commentary shoul
 Please, use less than 200 words !!!
 """
 
+
+class UserInput(BaseModel):
+    user_input: str
+    topic: str
+
+
+def prepare(obj: dict):
+    return UserInput(**obj)
+
+
 def generate_prompt():
     try:
         response = client.chat.completions.create(
@@ -40,7 +50,7 @@ def generate_prompt():
         )
         return response.choices[0].message.content
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e)) # fix this in request
+        return str(e)  # fix this in request
 
 
 def evaluate_response(user_input: str, topic: str):
@@ -60,24 +70,38 @@ def evaluate_response(user_input: str, topic: str):
                     "role": "system",
                     "content": f"Evaluate the following response for clarity, grammar, and provide suggestions. Discuss also the user ability to follow the subject.",
                 },
-                {
-                    "role": "user",
-                    "content": user_input
-                }
+                {"role": "user", "content": user_input},
             ],
             max_tokens=350,
         )
         return response.choices[0].message.content
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e)) # fix this in request
+        return str(e)  # fix this in request
+
+
+def suggest_answer(user_input: UserInput):
+    try:
+        response = client.chat.completions.create(
+            model=model_name,
+            messages=[
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "assistant", "content": user_input.topic},
+                {
+                    "role": "system",
+                    "content": "Generate a suggested answer for the following topic.",
+                },
+                {"role": "user", "content": user_input.topic},
+            ],
+            max_tokens=350,
+        )
+        return response.choices[0].message.content
+    except Exception as e:
+        return str(e)  # fix this in request
 
 
 def suggest_topic():
     return {"topic": generate_prompt()}
 
-
-def prepare(obj: dict):
-    return UserInput(**obj)
 
 def evaluate(user_input: UserInput):
     evaluation = evaluate_response(user_input.user_input, user_input.topic)
@@ -85,17 +109,5 @@ def evaluate(user_input: UserInput):
 
 
 def suggest_llm_answer(user_input: UserInput):
-    try:
-        response = client.chat.completions.create(
-            model=model_name,
-            messages=[
-                {"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "assistant", "content": user_input.topic},
-                {"role": "system", "content": "Generate a suggested answer for the following topic."},
-                {"role": "user", "content": user_input.topic}
-            ],
-            max_tokens=350,
-        )
-        return {"suggested_answer": response.choices[0].message.content}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e)) # fix this in request
+    response = suggest_answer(user_input)
+    return {"suggested_answer": response}
