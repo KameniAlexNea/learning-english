@@ -27,7 +27,7 @@ st.title("English Learning Tool")
 if "topic" not in st.session_state:
     st.session_state["topic"] = get_topic()
 
-st.write(f"**Suggested Topic:** \n{st.session_state['topic']}")
+st.write(f"{st.session_state['topic']}")
 
 user_input = st.text_area("Your response:", height=200)
 
