@@ -2,6 +2,8 @@
 
 This project is a web-based English learning tool that allows users to improve their writing skills by engaging in discussions on suggested topics. The tool provides feedback on user input in terms of clarity, grammar, and adherence to the topic. Additionally, it can suggest answers to topics, helping users to learn through examples.
 
+<img src="images/image.png">
+
 ## Features
 
 - **Topic Suggestion**: Automatically generates a writing topic with a brief commentary to guide users.
@@ -13,20 +15,25 @@ This project is a web-based English learning tool that allows users to improve t
 
 ```
 .
-├── backend/
-│   ├── main.py            # FastAPI backend server
-│   └── .env               # Environment variables including OpenAI API key
-├── frontend/
-│   └── frontend.py        # Streamlit frontend interface
+├── gradio_frontend.py     # Gradio frontend interface
+├── images/
+│   └── image.png          # Example image used in the README.md
+├── learning_language/
+│   ├── backend.py         # Backend logic for handling requests and responses
+│   ├── __init__.py        # Initialization file for the learning_language package
+│   ├── llm.py             # Interface with a language model (e.g., OpenAI GPT)
+│   ├── model_dataclass.py # Data classes for managing model configurations
+│   └── prompts.py         # Templates and utilities for generating prompts
+├── README.md              # Project documentation
 ├── requirements.txt       # Python dependencies
-└── README.md              # Project documentation
+└── streamlit_frontend.py  # Streamlit frontend interface
 ```
 
 ## Installation
 
 ### Prerequisites
 
-- Python 3.7+
+- Python 3.8+
 - pip (Python package installer)
 
 ### Clone the Repository
@@ -61,34 +68,37 @@ cd english-learning-tool
    Add the following to your `.env` file:
 
    ```env
-   OPENAI_API_KEY=your_openai_api_key_here
+   OPENAI_API_KEY="..."
+   OLLAMA_CONFIG_MODEL="smollm2:latest"
+   OPENAI_CONFIG_MODEL="gpt-4o-mini"
+   USE_OPENAI="0" # use of ollama, set to 1 for openai
    ```
 
-## Running the Application
-
-### Start the Backend Server
-
-Navigate to the `backend/` directory and run the FastAPI server:
-
-```bash
-cd backend
-uvicorn main:app --reload
-```
-
-The backend will start running on `http://127.0.0.1:8000`.
+## Usage
 
 ### Start the Frontend Interface
 
-Open a new terminal, navigate to the `frontend/` directory, and start the Streamlit app:
+You can use either Gradio or Streamlit as the frontend interface.
+
+#### Using Gradio
+
+Open a new terminal, navigate to the root directory, and start the Gradio app:
 
 ```bash
-cd frontend
-streamlit run frontend.py
+python gradio_frontend.py
 ```
 
 This will launch the frontend in your default web browser.
 
-## Usage
+#### Using Streamlit
+
+Open a new terminal, navigate to the root directory, and start the Streamlit app:
+
+```bash
+streamlit run streamlit_frontend.py
+```
+
+This will also launch the frontend in your default web browser.
 
 1. **Topic Suggestion**:
 
