@@ -72,7 +72,7 @@ def evaluate_response(user_input: str, topic: str):
         },
         {
             "role": "system",
-            "content": f"Evaluate the following response for clarity, grammar, and provide suggestions. Discuss also the user ability to follow the subject.",
+            "content": f"Evaluate the following response for clarity, grammar, and provide suggestions. Discuss also the user ability to follow the subject. Your evaluation should be written in " + LANGUAGE,
         },
         {"role": "user", "content": user_input},
     ]

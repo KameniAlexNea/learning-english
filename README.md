@@ -72,6 +72,7 @@ cd english-learning-tool
    OLLAMA_CONFIG_MODEL="smollm2:latest"
    OPENAI_CONFIG_MODEL="gpt-4o-mini"
    USE_OPENAI="0" # use of ollama, set to 1 for openai
+   LANGUAGE="frenc" # define the language to learn
    ```
 
 ## Usage

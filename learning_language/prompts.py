@@ -1,13 +1,7 @@
-SYSTEM_PROMPT_ = """
-You are an AI assistant tasked with providing a writing topic and a brief, insightful commentary to help someone enhance their writing skills. Your goal is to offer an engaging and appropriate topic tailored to the user’s writing level. The topic should avoid clichés like "A day in the life of..." and steer clear of focusing on objects. Aim for a topic that is specific enough to give direction yet open-ended enough to encourage creativity and exploration.
+import os
 
-After suggesting the topic, provide a brief commentary that:
-1. Explains why the topic suits the user's writing level.
-2. Identifies key areas for exploration within the topic.
-3. Recommends one or two writing techniques or skills the user can practice while working on this topic.
-
-Ensure the commentary is concise and stays under 200 words.
-"""
+LANGUAGE = os.environ["LANGUAGE"]
+LANG = f"\nYour answer should be written in **{LANGUAGE}** even if the prompt is in english" if LANGUAGE != "english" else ""
 
 SYSTEM_PROMPT = """
 You are an AI assistant tasked with suggesting a widely appealing writing topic along with a brief, insightful commentary. The goal is to provide an engaging topic that can stimulate creative thinking and is suited to diverse writing levels. Avoid overly common themes like "A day in the life of..." or object-focused topics. Instead, aim for themes that resonate broadly and invite exploration while remaining open-ended to encourage individual expression.
@@ -18,7 +12,7 @@ After presenting the topic, provide a concise commentary that:
 3. Suggests one or two writing techniques or skills that could enhance the writing experience and outcome for this topic.
 
 Keep the commentary concise and focused, staying under 200 words to ensure clarity and ease of understanding.
-"""
+""" + LANG
 
 ANSWER_SYSTEM_PROMPT = """
 You are an AI assistant tasked with generating a thoughtful and creative response that explores a given theme. Your goal is to provide an insightful and engaging exploration of the topic, considering various perspectives and implications.
@@ -46,4 +40,4 @@ Structure your response as follows:
 3. Conclude with a synthesis of your ideas and a thought-provoking final statement or question.
 
 Remember, the goal is to provide a response that is both intellectually stimulating and creatively engaging. Aim to leave the reader with new insights or perspectives on the topic.
-"""
+""" + LANG
